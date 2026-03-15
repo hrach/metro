@@ -11,11 +11,13 @@ import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Multibinds
 import dev.zacsweers.metro.Provider
 import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.sample.android.vm.FooBindingContainer
+import dev.zacsweers.metro.sample.android.vm.MetroViewModelGraph
 import dev.zacsweers.metrox.android.MetroAppComponentProviders
 import dev.zacsweers.metrox.viewmodel.ViewModelGraph
 import kotlin.reflect.KClass
 
-@DependencyGraph(AppScope::class)
+@DependencyGraph(AppScope::class, bindingContainers = [FooBindingContainer::class])
 interface AppGraph : MetroAppComponentProviders, ViewModelGraph {
 
   @Provides fun provideApplicationContext(application: Application): Context = application
@@ -32,6 +34,8 @@ interface AppGraph : MetroAppComponentProviders, ViewModelGraph {
     Map<KClass<out ListenableWorker>, Provider<MetroWorkerFactory.WorkerInstanceFactory<*>>>
 
   val workerFactory: MetroWorkerFactory
+
+  val viewModelGraphFactory: MetroViewModelGraph.Factory
 
   @DependencyGraph.Factory
   fun interface Factory {
